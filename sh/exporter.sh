@@ -13,14 +13,15 @@ BIN="amd64"
 
 LATEST=$(curl -s https://api.github.com/repos/prometheus/node_exporter/releases/latest | grep "linux-${BIN}.tar.gz" | cut -d '"' -f 4 | tail -1)
 
-if [[ "$FIREWALL_RULES" ]]; then
+if [[ "$FIREWALL_RULES" == "ACCEPT" ]]; then
     echo "OK"
 else
     echo "Your firewall is off or you need to allow your firewall on port 9090"
     echo "Continue? [Y/n]"
     read IN
-    if [ ! IN == "Y" ]; then
-        exit 1
+    if [ "$IN" != "Y" ]; then
+        echo "NO"
+	exit 1
     fi
 fi
 
